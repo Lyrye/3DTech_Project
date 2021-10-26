@@ -13,36 +13,36 @@ public class FirstTry : MonoBehaviour {
 	public Transform gestureOnScreenPrefab;
 	private List<Gesture> trainingSet = new List<Gesture>();
 	private List<Point> points = new List<Point>();
-	private int strokeId = -1;
-	private Vector3 virtualKeyPosition = Vector2.zero;
-	public Rect drawArea;
-	private RuntimePlatform platform;
-	private int vertexCount = 0;
+	private int _strokeId = -1;
+	private Vector3 _virtualKeyPosition = Vector2.zero;
+	private Rect _drawArea;
+	private RuntimePlatform _platform;
+	private int _vertexCount = 0;
 	public List<LineRenderer> gestureLinesRenderer = new List<LineRenderer>();
-	private LineRenderer currentGestureLineRenderer;
+	private LineRenderer _currentGestureLineRenderer;
 
 
 	public Text feedback;
 	//GUI
-	private string message;
-	private bool recognized;
+	private string _message;
+	private bool _recognized;
 	private string newGestureName = "";
 
-	private bool isRecognize = false;
+	private bool _isRecognize = false;
 	public GameObject reward;
 	
 	public Button recognize;
 	public Button getPattern;
-	private Gesture currentGesture;
-	public Text GestureText;
+	private Gesture _currentGesture;
+	public Text gestureText;
 
 	void Start ()
 	{
 		reward.SetActive(false);
 		recognize.onClick.AddListener(StartRecognize);
 		getPattern.onClick.AddListener(GetRandomPattern);
-		platform = Application.platform;
-		drawArea = new Rect(Screen.width/7, Screen.height/2 - (Screen.height/4)/2, Screen.width/4, Screen.height/3);
+		_platform = Application.platform;
+		_drawArea = new Rect(Screen.width/7, Screen.height/2 - (Screen.height/4)/2, Screen.width/4, Screen.height/3);
 
 		LoadPreMadeGesture();
 		LoadCustomGesture();
@@ -51,38 +51,38 @@ public class FirstTry : MonoBehaviour {
 	void Update ()
 	{
 		Recognition();
-		if (isRecognize == true)
+		if (_isRecognize == true)
 		{
 			reward.SetActive(true);
-			isRecognize = false;
+			_isRecognize = false;
 		}
 	}
 
 	private void Recognition()
 	{
-		if (platform == RuntimePlatform.Android || platform == RuntimePlatform.IPhonePlayer)
+		if (_platform == RuntimePlatform.Android || _platform == RuntimePlatform.IPhonePlayer)
 		{
 			if (Input.touchCount > 0)
 			{
-				virtualKeyPosition = new Vector3(Input.GetTouch(0).position.x, Input.GetTouch(0).position.y);
+				_virtualKeyPosition = new Vector3(Input.GetTouch(0).position.x, Input.GetTouch(0).position.y);
 			}
 		}
 		else
 		{
 			if (Input.GetMouseButton(0))
 			{
-				virtualKeyPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y);
+				_virtualKeyPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y);
 			}
 		}
 
-		if (drawArea.Contains(virtualKeyPosition))
+		if (_drawArea.Contains(_virtualKeyPosition))
 		{
 			if (Input.GetMouseButtonDown(0))
 			{
-				if (recognized)
+				if (_recognized)
 				{
-					recognized = false;
-					strokeId = -1;
+					_recognized = false;
+					_strokeId = -1;
 
 					points.Clear();
 
@@ -95,31 +95,31 @@ public class FirstTry : MonoBehaviour {
 					gestureLinesRenderer.Clear();
 				}
 
-				++strokeId;
+				++_strokeId;
 
 				Transform tmpGesture =
 					Instantiate(gestureOnScreenPrefab, transform.position, transform.rotation) as Transform;
-				currentGestureLineRenderer = tmpGesture.GetComponent<LineRenderer>();
+				_currentGestureLineRenderer = tmpGesture.GetComponent<LineRenderer>();
 
-				gestureLinesRenderer.Add(currentGestureLineRenderer);
+				gestureLinesRenderer.Add(_currentGestureLineRenderer);
 
-				vertexCount = 0;
+				_vertexCount = 0;
 			}
 
 			if (Input.GetMouseButton(0))
 			{
-				points.Add(new Point(virtualKeyPosition.x, -virtualKeyPosition.y, strokeId));
+				points.Add(new Point(_virtualKeyPosition.x, -_virtualKeyPosition.y, _strokeId));
 
-				currentGestureLineRenderer.SetVertexCount(++vertexCount);
-				currentGestureLineRenderer.SetPosition(vertexCount - 1,
-					Camera.main.ScreenToWorldPoint(new Vector3(virtualKeyPosition.x, virtualKeyPosition.y, 10)));
+				_currentGestureLineRenderer.SetVertexCount(++_vertexCount);
+				_currentGestureLineRenderer.SetPosition(_vertexCount - 1,
+					Camera.main.ScreenToWorldPoint(new Vector3(_virtualKeyPosition.x, _virtualKeyPosition.y, 10)));
 			}
 		}
 	}
 
 	private void OnGUI()
 	{
-		GUI.Box(drawArea, "Draw Area");
+		GUI.Box(_drawArea, "Draw Area");
 	}
 
 	private void LoadCustomGesture()
@@ -137,26 +137,26 @@ public class FirstTry : MonoBehaviour {
 
 	private void StartRecognize()
 	{
-		isRecognize = false;
-		recognized = true;
+		_isRecognize = false;
+		_recognized = true;
 
 		Gesture candidate = new Gesture(points.ToArray());
 		Result gestureResult = PointCloudRecognizer.Classify(candidate, trainingSet.ToArray());
-		if (gestureResult.GestureClass == currentGesture.Name && gestureResult.Score >0.7)
+		if (gestureResult.GestureClass == _currentGesture.Name && gestureResult.Score >0.7)
 		{
-			isRecognize = true;
+			_isRecognize = true;
 			reward.SetActive(true);
 			Debug.Log("It is the right pattern");
 		}	
-		message += gestureResult.GestureClass + " " + gestureResult.Score;
-		feedback.text = message;
+		_message += gestureResult.GestureClass + " " + gestureResult.Score;
+		feedback.text = _message;
 	}
 
 	private void GetRandomPattern()
 	{
 		float random = UnityEngine.Random.Range(0,trainingSet.Count);
-		currentGesture = trainingSet[(int)random];
-		GestureText.text = currentGesture.Name;
+		_currentGesture = trainingSet[(int)random];
+		gestureText.text = _currentGesture.Name;
 
 	}
 	
