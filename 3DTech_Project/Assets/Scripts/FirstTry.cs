@@ -9,8 +9,10 @@ using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 using Random = System.Random;
 
-public class FirstTry : MonoBehaviour {
+public class FirstTry : MonoBehaviour
+{
 
+	public FirstTry instance; 
 	public Transform gestureOnScreenPrefab;
 	private List<Gesture> trainingSet = new List<Gesture>();
 	private List<Point> points = new List<Point>();
@@ -21,35 +23,40 @@ public class FirstTry : MonoBehaviour {
 	private int _vertexCount = 0;
 	public List<LineRenderer> gestureLinesRenderer = new List<LineRenderer>();
 	private LineRenderer _currentGestureLineRenderer;
-
-
-	public Text feedback;
+	
 	//GUI
 	private string _message;
 	private bool _recognized;
 	private string newGestureName = "";
 
 	private bool _isRecognize = false;
-	public GameObject reward;
 	
-	public Button recognize;
-	public Button getPattern;
+	
 	private Gesture _currentGesture;
 	public Text gestureText;
 
 	private float score =0;
 	public Text scoreText;
 
+	
+	
+	public static FirstTry Instance { get; private set; }
+	
+	void Awake()
+	{
+		if (instance != null && instance != this)
+			Destroy(gameObject);    // Suppression d'une instance précédente (sécurité...sécurité...)
+ 
+		instance = this;
+	}
 	void Start ()
 	{
-		reward.SetActive(false);
-		recognize.onClick.AddListener(StartRecognize);
-		getPattern.onClick.AddListener(GetRandomPattern);
 		_platform = Application.platform;
 		_drawArea = new Rect(Screen.width/7, Screen.height/2 - (Screen.height/4)/2, Screen.width/4, Screen.height/3);
 
 		LoadPreMadeGesture();
 		LoadCustomGesture();
+		GetRandomPattern();
 	}
 	
 	void Update ()
@@ -58,7 +65,6 @@ public class FirstTry : MonoBehaviour {
 		Recognition();
 		if (_isRecognize == true)
 		{
-			reward.SetActive(true);
 			_isRecognize = false;
 		}
 	}
@@ -140,8 +146,9 @@ public class FirstTry : MonoBehaviour {
 			trainingSet.Add(GestureIO.ReadGestureFromXML(gestureXml.text));
 	}
 
-	private void StartRecognize()
+	public void  StartRecognize()
 	{
+		Debug.Log("Do reco");
 		_isRecognize = false;
 		_recognized = true;
 
@@ -150,12 +157,10 @@ public class FirstTry : MonoBehaviour {
 		if (gestureResult.GestureClass == _currentGesture.Name && gestureResult.Score >0.7)
 		{
 			_isRecognize = true;
-			reward.SetActive(true);
 			score += gestureResult.Score * 100;
 			GetRandomPattern();
 		}	
 		_message = gestureResult.GestureClass + " " + gestureResult.Score;
-		feedback.text = _message;
 		scoreText.text = score.ToString(); 
 	}
 

@@ -54,7 +54,9 @@ public class Player : MonoBehaviour
           //...tell the Animator about it...
           anim.enabled = false;
           //...and tell the game control about it.
-          GameControl.instance.ChickenDied ();
+          GameControl.instance.ChickenDied ();  
+          FirstTry.Instance.StartRecognize();        
+
         }
     }
 }
