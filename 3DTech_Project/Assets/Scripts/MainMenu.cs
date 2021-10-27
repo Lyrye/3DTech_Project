@@ -5,6 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+  /*
+    public void Awake()
+    {
+        DontDestroyOnLoad(PlayerStats.Instance);
+    }*/
+
     public void ExitButton()
     {
       Application.Quit();
@@ -14,5 +20,10 @@ public class MainMenu : MonoBehaviour
     public void StartGame()
     {
       SceneManager.LoadScene("Game");
+    }
+
+    public void StartMenu()
+    {
+      SceneManager.LoadScene("MainMenu");
     }
 }

@@ -15,6 +15,8 @@ public class Player : MonoBehaviour
     public float spriteBlinkingTotalDuration = 1.0f;
     public bool startBlinking = false;
 
+    public GameObject CanvasGameOver;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -50,9 +52,11 @@ public class Player : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("test" + PlayerStats.Instance.Health);
 
         PlayerStats.Instance.TakeDamage(1.0f);
+
+        Debug.Log("test" + PlayerStats.Instance.Health);
+
         startBlinking = true;
 
         if(PlayerStats.Instance.Health <= 0){
@@ -63,6 +67,8 @@ public class Player : MonoBehaviour
           anim.enabled = false;
           //...and tell the game control about it.
           GameControl.instance.ChickenDied ();
+          //Destroy(PlayerStats.Instance);
+          CanvasGameOver.SetActive(true);
         }
     }
 

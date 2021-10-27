@@ -23,19 +23,27 @@ public class GameControl : MonoBehaviour
           instance = this;
       //...otherwise...
       else if(instance != this)
-          //...destroy this one because it is a duplicate.
-          Destroy (gameObject);
+      {
+        //...destroy this one because it is a duplicate.
+        Destroy (gameObject);
+      }
+
+        PlayerStats.Instance.Health = LifeCountSlider.lifeCount;
+        PlayerStats.Instance.MaxHealth = LifeCountSlider.lifeCount;
+    //    PlayerStats.Instance.Heal(100.0f);
     }
 
     // Update is called once per frame
     void Update()
     {
       //If the game is over and the player has pressed some input...
+      /*
       if (gameOver && Input.GetMouseButtonDown(0))
       {
           //...reload the current scene.
           SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
       }
+      */
     }
 
     public void ChickenScored()
