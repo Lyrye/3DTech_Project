@@ -3503,8 +3503,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec0b64c0b1dccc64d91eee52d85267bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 3
-  maxHealth: 3
+  health: 4
+  maxHealth: 4
   maxTotalHealth: 30
 --- !u!4 &1081841727
 Transform:
@@ -5527,7 +5527,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2472fbb80129516459b398dacb7557f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifeCount: 3
+  spriteBlinkingTimer: 0
+  spriteBlinkingMiniDuration: 0.1
+  spriteBlinkingTotalTimer: 0
+  spriteBlinkingTotalDuration: 1.2
+  startBlinking: 0
 --- !u!50 &1969962779
 Rigidbody2D:
   serializedVersion: 4
