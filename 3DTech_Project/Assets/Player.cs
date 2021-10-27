@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float upForce;                    //Upward force of the "flap".
     private bool isDead = false;            //Has the player collided with a wall?
     public int lifeCount;
 
@@ -24,5 +23,38 @@ public class Player : MonoBehaviour
 
     }
 
+    void OnCollisionEnter2D(Collision2D other)
+    {
+      //  Debug.Log("test");
 
+        // If the bird collides with something set it to dead...
+        lifeCount = lifeCount - 1 ;
+        if(lifeCount == 0){
+          // Zero out the bird's velocity
+          rb.velocity = Vector2.zero;
+          isDead = true;
+          //...tell the Animator about it...
+          anim.enabled = false;
+          //...and tell the game control about it.
+          GameControl.instance.ChickenDied ();
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        Debug.Log("test" + lifeCount);
+
+        // If the bird collides with something set it to dead...
+        lifeCount = lifeCount - 1 ;
+        PlayerStats.Instance.TakeDamage(1.0f); 
+        if(lifeCount == 0){
+          // Zero out the bird's velocity
+          rb.velocity = Vector2.zero;
+          isDead = true;
+          //...tell the Animator about it...
+          anim.enabled = false;
+          //...and tell the game control about it.
+          GameControl.instance.ChickenDied ();
+        }
+    }
 }
