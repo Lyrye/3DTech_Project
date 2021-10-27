@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using PDollarGestureRecognizer;
+using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 using Random = System.Random;
 
@@ -36,6 +37,9 @@ public class FirstTry : MonoBehaviour {
 	private Gesture _currentGesture;
 	public Text gestureText;
 
+	private float score =0;
+	public Text scoreText;
+
 	void Start ()
 	{
 		reward.SetActive(false);
@@ -50,6 +54,7 @@ public class FirstTry : MonoBehaviour {
 	
 	void Update ()
 	{
+
 		Recognition();
 		if (_isRecognize == true)
 		{
@@ -146,10 +151,12 @@ public class FirstTry : MonoBehaviour {
 		{
 			_isRecognize = true;
 			reward.SetActive(true);
-			Debug.Log("It is the right pattern");
+			score += gestureResult.Score * 100;
+			GetRandomPattern();
 		}	
-		_message += gestureResult.GestureClass + " " + gestureResult.Score;
+		_message = gestureResult.GestureClass + " " + gestureResult.Score;
 		feedback.text = _message;
+		scoreText.text = score.ToString(); 
 	}
 
 	private void GetRandomPattern()
