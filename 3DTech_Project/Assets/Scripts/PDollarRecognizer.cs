@@ -56,6 +56,7 @@ public class PDollarRecognizer : MonoBehaviour
 		highscore = PlayerPrefs.GetInt("highscore", 0);
 		highscoreText.text = "Highscore : " + highscore.ToString();
 
+		introText.enabled = LifeCountSlider.printIntro;
 		Destroy(introText, 3.0f);
 
 		LoadPreMadeGesture();
