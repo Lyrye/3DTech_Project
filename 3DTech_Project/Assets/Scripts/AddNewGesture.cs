@@ -5,8 +5,9 @@ using System.Collections.Generic;
 using System.IO;
 using PDollarGestureRecognizer;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
-public class ManageGesture : MonoBehaviour
+public class AddNewGesture : MonoBehaviour
 {
     public Transform gestureOnScreenPrefab;
     
@@ -25,6 +26,7 @@ public class ManageGesture : MonoBehaviour
     public InputField newGestureName;
     public Button addGesture;
     public Button clear;
+    public Button back;
 
     public GameObject ErrorInName; 
     void Start()
@@ -34,8 +36,7 @@ public class ManageGesture : MonoBehaviour
         ErrorInName.SetActive(false);
         addGesture.onClick.AddListener(AddGesture);
         clear.onClick.AddListener(Clear);
-        
-        
+        back.onClick.AddListener(GoToManageGesture);
         LoadGesture();
     }
 
@@ -136,5 +137,10 @@ public class ManageGesture : MonoBehaviour
     private void Clear()
     {
         Util.PDollarUtil.CleanDrawingArea(recognized,strokeId,points,gestureLinesRenderer);
+    }
+
+    private void GoToManageGesture()
+    {
+        SceneManager.LoadScene("ManageGesture"); 
     }
 }

@@ -14,4 +14,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Free Pixel Art Hills/Demo/Game.unity
     guid: c03ec417bacb48840a2a07a72be16eda
+  - enabled: 1
+    path: Assets/Scenes/AddGesture.unity
+    guid: 3157f69ead85a1745905922bd1b331a4
+  - enabled: 1
+    path: Assets/Scenes/ManageGesture.unity
+    guid: cb37d38dc66bcc14abd6b4f257333a15
   m_configObjects: {}
