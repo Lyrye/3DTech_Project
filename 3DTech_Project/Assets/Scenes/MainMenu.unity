@@ -1601,7 +1601,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Commencer
+  m_Text: Jouer
 --- !u!222 &1185356584
 CanvasRenderer:
   m_ObjectHideFlags: 0

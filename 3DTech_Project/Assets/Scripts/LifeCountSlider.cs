@@ -14,7 +14,7 @@ public class LifeCountSlider : MonoBehaviour
 
     public Toggle myToggle;
 
-    public static bool printIntro;
+    public static bool printIntro = true;
     // Start is called before the first frame update
     void Start()
     {
