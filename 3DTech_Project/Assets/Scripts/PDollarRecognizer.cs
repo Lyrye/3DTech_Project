@@ -16,9 +16,10 @@ public class PDollarRecognizer : MonoBehaviour
 	public Transform gestureOnScreenPrefab;
 	public Text scoreText;
 	public Text gestureText;
+	public Text highscoreText;
 	public List<LineRenderer> gestureLinesRenderer = new List<LineRenderer>();
 	public static PDollarRecognizer Instance { get; private set; }
-	
+
 	private List<Gesture> trainingSet = new List<Gesture>();
 	private List<Point> points = new List<Point>();
 	private int _strokeId = -1;
@@ -31,8 +32,11 @@ public class PDollarRecognizer : MonoBehaviour
 	private string newGestureName = "";
 	private bool _isRecognize = false;
 	private Gesture _currentGesture;
-	private float score =0;
-	
+	private int score =0;
+	private int highscore = 0;
+
+	public Text introText;
+
 	public bool isRecognized()
 	{
 		return _isRecognize;
@@ -49,11 +53,16 @@ public class PDollarRecognizer : MonoBehaviour
 		_platform = Application.platform;
 		_drawArea = new Rect(0, 0, Screen.width, Screen.height);
 
+		highscore = PlayerPrefs.GetInt("highscore", 0);
+		highscoreText.text = "Highscore : " + highscore.ToString();
+
+		Destroy(introText, 3.0f);
+
 		LoadPreMadeGesture();
 		LoadCustomGesture();
 		GetRandomPattern();
 	}
-	
+
 	void Update ()
 	{
 
@@ -120,7 +129,7 @@ public class PDollarRecognizer : MonoBehaviour
 
 	private void LoadCustomGesture()
 	{
-		
+
 		string[] filePaths = Directory.GetFiles(Application.persistentDataPath, "*.xml");
 		foreach (string filePath in filePaths)
 			trainingSet.Add(GestureIO.ReadGestureFromFile(filePath));
@@ -139,15 +148,25 @@ public class PDollarRecognizer : MonoBehaviour
 
 		Gesture candidate = new Gesture(points.ToArray());
 		Result gestureResult = PointCloudRecognizer.Classify(candidate, trainingSet.ToArray());
-		if (gestureResult.GestureClass == _currentGesture.Name && gestureResult.Score >0.5)
+		if ( gestureResult.GestureClass == _currentGesture.Name && gestureResult.Score >0.5)
 		{
 			_isRecognize = true;
-			score += gestureResult.Score * 100;
-		}	
+			float floatResult = gestureResult.Score * 100;
+			score += (int)floatResult;
+		}
+
+		Debug.Log(gestureResult.GestureClass);
+
 		GetRandomPattern();
 		Util.PDollarUtil.CleanDrawingArea(_recognized,_strokeId,points,gestureLinesRenderer);
 		scoreText.text = "Score : "+ score.ToString();
-		
+
+		if(highscore < score)
+		{
+			PlayerPrefs.SetInt("highscore", score);
+			highscoreText.text = "Highscore : " + score.ToString();
+		}
+
 	}
 
 	private void GetRandomPattern()
