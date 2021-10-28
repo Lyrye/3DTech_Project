@@ -12,7 +12,7 @@ public class AudioManager : MonoBehaviour
 {
     public AudioClip[] Playlist;
     public AudioSource AudioSourceA;
-   // public AudioSource AudioSourceB;
+    public AudioSource AudioSourceB;
     public AudioMixer AudioMixer;
    
     private static AudioManager instance = null;
@@ -115,6 +115,12 @@ public class AudioManager : MonoBehaviour
     {
         AudioMixer.SetFloat("MusicVolume", Mathf.Log10(sliderValue) * 20);
         PlayerPrefs.SetFloat("Volume", sliderValue);
+    }
+
+    public void PlaySound(AudioClip clip)
+    {
+        AudioSourceB.clip = clip; 
+        AudioSourceB.Play();
     }
 }
 
