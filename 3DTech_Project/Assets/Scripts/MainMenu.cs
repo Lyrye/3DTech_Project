@@ -26,4 +26,9 @@ public class MainMenu : MonoBehaviour
     {
       SceneManager.LoadScene("MainMenu");
     }
+
+    public void StartGestes()
+    {
+      SceneManager.LoadScene("ManageGesture");
+    }
 }
