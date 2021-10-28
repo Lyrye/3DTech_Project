@@ -45,7 +45,7 @@ public class PDollarRecognizer : MonoBehaviour
 	void Awake()
 	{
 		if (Instance != null && Instance != this)
-			Destroy(gameObject);    
+			Destroy(gameObject);
 		Instance = this;
 	}
 	void Start ()
@@ -107,15 +107,15 @@ public class PDollarRecognizer : MonoBehaviour
 				}
 
 				++_strokeId;
-				
+
 				Transform tmpGesture = Instantiate(gestureOnScreenPrefab, transform.position, transform.rotation) as Transform;
 				_currentGestureLineRenderer = tmpGesture.GetComponent<LineRenderer>();
-				
+
 				gestureLinesRenderer.Add(_currentGestureLineRenderer);
-				
+
 				_vertexCount = 0;
 			}
-			
+
 			if (Input.GetMouseButton(0)) {
 				points.Add(new Point(_virtualKeyPosition.x, -_virtualKeyPosition.y, _strokeId));
 
@@ -158,8 +158,13 @@ public class PDollarRecognizer : MonoBehaviour
 				_isRecognize = true;
 				float floatResult = gestureResult.Score * 100;
 				score += (int)floatResult;
+
+				if(gestureResult.GestureClass == "♡")
+				{
+					PlayerStats.Instance.Heal(1.0f);
+				}
 			}
-			
+
 			GetRandomPattern();
 			Util.PDollarUtil.CleanDrawingArea(_recognized,_strokeId,points,gestureLinesRenderer);
 			scoreText.text = "Score : "+ score.ToString();
@@ -170,7 +175,7 @@ public class PDollarRecognizer : MonoBehaviour
 				highscoreText.text = "Highscore : " + score.ToString();
 			}
 		}
-		
+
 
 	}
 
@@ -180,6 +185,6 @@ public class PDollarRecognizer : MonoBehaviour
 		_currentGesture = trainingSet[(int)random];
 		gestureText.text = _currentGesture.Name;
 	}
-	
-	
+
+
 }
