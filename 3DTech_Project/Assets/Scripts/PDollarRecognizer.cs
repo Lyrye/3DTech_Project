@@ -45,7 +45,7 @@ public class PDollarRecognizer : MonoBehaviour
 	void Awake()
 	{
 		if (Instance != null && Instance != this)
-			Destroy(gameObject);    // Suppression d'une instance précédente (sécurité...sécurité...)
+			Destroy(gameObject);    
 		Instance = this;
 	}
 	void Start ()
@@ -75,49 +75,51 @@ public class PDollarRecognizer : MonoBehaviour
 
 	private void Recognition()
 	{
-		if (_platform == RuntimePlatform.Android || _platform == RuntimePlatform.IPhonePlayer)
-		{
-			if (Input.touchCount > 0)
-			{
+		if (_platform == RuntimePlatform.Android || _platform == RuntimePlatform.IPhonePlayer) {
+			if (Input.touchCount > 0) {
 				_virtualKeyPosition = new Vector3(Input.GetTouch(0).position.x, Input.GetTouch(0).position.y);
 			}
-		}
-		else
-		{
-			if (Input.GetMouseButton(0))
-			{
+		} else {
+			if (Input.GetMouseButton(0)) {
 				_virtualKeyPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y);
 			}
 		}
 
-		if (_drawArea.Contains(_virtualKeyPosition))
-		{
-			if (Input.GetMouseButtonDown(0))
-			{
-				if (_recognized)
-				{
-					Util.PDollarUtil.CleanDrawingArea(_recognized,_strokeId,points,gestureLinesRenderer);
+		if (_drawArea.Contains(_virtualKeyPosition)) {
 
+			if (Input.GetMouseButtonDown(0)) {
+
+				if (_recognized) {
+
+					_recognized = false;
+					_strokeId = -1;
+
+					points.Clear();
+
+					foreach (LineRenderer lineRenderer in gestureLinesRenderer) {
+
+						lineRenderer.SetVertexCount(0);
+						Destroy(lineRenderer.gameObject);
+					}
+
+					gestureLinesRenderer.Clear();
 				}
 
 				++_strokeId;
-
-				Transform tmpGesture =
-					Instantiate(gestureOnScreenPrefab, transform.position, transform.rotation) as Transform;
+				
+				Transform tmpGesture = Instantiate(gestureOnScreenPrefab, transform.position, transform.rotation) as Transform;
 				_currentGestureLineRenderer = tmpGesture.GetComponent<LineRenderer>();
-
+				
 				gestureLinesRenderer.Add(_currentGestureLineRenderer);
-
+				
 				_vertexCount = 0;
 			}
-
-			if (Input.GetMouseButton(0))
-			{
+			
+			if (Input.GetMouseButton(0)) {
 				points.Add(new Point(_virtualKeyPosition.x, -_virtualKeyPosition.y, _strokeId));
 
 				_currentGestureLineRenderer.SetVertexCount(++_vertexCount);
-				_currentGestureLineRenderer.SetPosition(_vertexCount - 1,
-					Camera.main.ScreenToWorldPoint(new Vector3(_virtualKeyPosition.x, _virtualKeyPosition.y, 10)));
+				_currentGestureLineRenderer.SetPosition(_vertexCount - 1, Camera.main.ScreenToWorldPoint(new Vector3(_virtualKeyPosition.x, _virtualKeyPosition.y, 10)));
 			}
 		}
 	}
@@ -146,26 +148,28 @@ public class PDollarRecognizer : MonoBehaviour
 		_isRecognize = false;
 		_recognized = true;
 
-		Gesture candidate = new Gesture(points.ToArray());
-		Result gestureResult = PointCloudRecognizer.Classify(candidate, trainingSet.ToArray());
-		if ( gestureResult.GestureClass == _currentGesture.Name && gestureResult.Score >0.5)
+		if (points.Count > 0)
 		{
-			_isRecognize = true;
-			float floatResult = gestureResult.Score * 100;
-			score += (int)floatResult;
+			Gesture candidate = new Gesture(points.ToArray());
+			Result gestureResult = PointCloudRecognizer.Classify(candidate, trainingSet.ToArray());
+			if ( gestureResult.GestureClass == _currentGesture.Name && gestureResult.Score >0.5)
+			{
+				_isRecognize = true;
+				float floatResult = gestureResult.Score * 100;
+				score += (int)floatResult;
+			}
+			
+			GetRandomPattern();
+			Util.PDollarUtil.CleanDrawingArea(_recognized,_strokeId,points,gestureLinesRenderer);
+			scoreText.text = "Score : "+ score.ToString();
+
+			if(highscore < score)
+			{
+				PlayerPrefs.SetInt("highscore", score);
+				highscoreText.text = "Highscore : " + score.ToString();
+			}
 		}
-
-		Debug.Log(gestureResult.GestureClass);
-
-		GetRandomPattern();
-		Util.PDollarUtil.CleanDrawingArea(_recognized,_strokeId,points,gestureLinesRenderer);
-		scoreText.text = "Score : "+ score.ToString();
-
-		if(highscore < score)
-		{
-			PlayerPrefs.SetInt("highscore", score);
-			highscoreText.text = "Highscore : " + score.ToString();
-		}
+		
 
 	}
 
