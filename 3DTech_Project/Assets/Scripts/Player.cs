@@ -52,12 +52,12 @@ public class Player : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-
-        PlayerStats.Instance.TakeDamage(1.0f);
-
-        Debug.Log("test" + PlayerStats.Instance.Health);
-
-        startBlinking = true;
+        PDollarRecognizer.Instance.StartRecognize();
+        if (!PDollarRecognizer.Instance.isRecognized())
+        {
+            PlayerStats.Instance.TakeDamage(1.0f);
+            startBlinking = true;
+        }
 
         if(PlayerStats.Instance.Health <= 0){
           // Zero out the bird's velocity

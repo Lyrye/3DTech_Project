@@ -9,11 +9,14 @@ using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 using Random = System.Random;
 
-public class FirstTry : MonoBehaviour
+public class PDollarRecognizer : MonoBehaviour
 {
-
-	public FirstTry instance; 
 	public Transform gestureOnScreenPrefab;
+	public Text scoreText;
+	public Text gestureText;
+	public List<LineRenderer> gestureLinesRenderer = new List<LineRenderer>();
+	public static PDollarRecognizer Instance { get; private set; }
+	
 	private List<Gesture> trainingSet = new List<Gesture>();
 	private List<Point> points = new List<Point>();
 	private int _strokeId = -1;
@@ -21,38 +24,29 @@ public class FirstTry : MonoBehaviour
 	private Rect _drawArea;
 	private RuntimePlatform _platform;
 	private int _vertexCount = 0;
-	public List<LineRenderer> gestureLinesRenderer = new List<LineRenderer>();
 	private LineRenderer _currentGestureLineRenderer;
-	
-	//GUI
-	private string _message;
 	private bool _recognized;
 	private string newGestureName = "";
-
 	private bool _isRecognize = false;
-	
-	
 	private Gesture _currentGesture;
-	public Text gestureText;
-
 	private float score =0;
-	public Text scoreText;
 
-	
-	
-	public static FirstTry Instance { get; private set; }
-	
+
+	public bool isRecognized()
+	{
+		return _isRecognize;
+	}
+
 	void Awake()
 	{
-		if (instance != null && instance != this)
+		if (Instance != null && Instance != this)
 			Destroy(gameObject);    // Suppression d'une instance précédente (sécurité...sécurité...)
- 
-		instance = this;
+		Instance = this;
 	}
 	void Start ()
 	{
 		_platform = Application.platform;
-		_drawArea = new Rect(Screen.width/7, Screen.height/2 - (Screen.height/4)/2, Screen.width/4, Screen.height/3);
+		_drawArea = new Rect(0, 0, Screen.width, Screen.height);
 
 		LoadPreMadeGesture();
 		LoadCustomGesture();
@@ -92,18 +86,7 @@ public class FirstTry : MonoBehaviour
 			{
 				if (_recognized)
 				{
-					_recognized = false;
-					_strokeId = -1;
-
-					points.Clear();
-
-					foreach (LineRenderer lineRenderer in gestureLinesRenderer)
-					{
-						lineRenderer.SetVertexCount(0);
-						Destroy(lineRenderer.gameObject);
-					}
-
-					gestureLinesRenderer.Clear();
+					CleanDrawingArea();
 				}
 
 				++_strokeId;
@@ -130,7 +113,7 @@ public class FirstTry : MonoBehaviour
 
 	private void OnGUI()
 	{
-		GUI.Box(_drawArea, "Draw Area");
+		//GUI.DrawTexture(_drawArea);
 	}
 
 	private void LoadCustomGesture()
@@ -148,20 +131,20 @@ public class FirstTry : MonoBehaviour
 
 	public void  StartRecognize()
 	{
-		Debug.Log("Do reco");
 		_isRecognize = false;
 		_recognized = true;
 
 		Gesture candidate = new Gesture(points.ToArray());
 		Result gestureResult = PointCloudRecognizer.Classify(candidate, trainingSet.ToArray());
-		if (gestureResult.GestureClass == _currentGesture.Name && gestureResult.Score >0.7)
+		if (gestureResult.GestureClass == _currentGesture.Name && gestureResult.Score >0.5)
 		{
 			_isRecognize = true;
 			score += gestureResult.Score * 100;
-			GetRandomPattern();
 		}	
-		_message = gestureResult.GestureClass + " " + gestureResult.Score;
-		scoreText.text = score.ToString(); 
+		GetRandomPattern();
+		CleanDrawingArea();
+		scoreText.text = "Score : "+ score.ToString();
+		
 	}
 
 	private void GetRandomPattern()
@@ -169,7 +152,22 @@ public class FirstTry : MonoBehaviour
 		float random = UnityEngine.Random.Range(0,trainingSet.Count);
 		_currentGesture = trainingSet[(int)random];
 		gestureText.text = _currentGesture.Name;
+	}
 
+	public void CleanDrawingArea()
+	{
+		_recognized = false;
+		_strokeId = -1;
+
+		points.Clear();
+
+		foreach (LineRenderer lineRenderer in gestureLinesRenderer)
+		{
+			lineRenderer.SetVertexCount(0);
+			Destroy(lineRenderer.gameObject);
+		}
+
+		gestureLinesRenderer.Clear();
 	}
 	
 }
