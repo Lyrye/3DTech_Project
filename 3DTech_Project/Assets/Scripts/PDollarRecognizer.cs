@@ -5,9 +5,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using PDollarGestureRecognizer;
+using UnityEditor;
 using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 using Random = System.Random;
+using Util;
 
 public class PDollarRecognizer : MonoBehaviour
 {
@@ -50,7 +52,6 @@ public class PDollarRecognizer : MonoBehaviour
 		LoadPreMadeGesture();
 		LoadCustomGesture();
 		GetRandomPattern();
-		Debug.Log("le path : "+Application.persistentDataPath);
 	}
 	
 	void Update ()
@@ -86,7 +87,8 @@ public class PDollarRecognizer : MonoBehaviour
 			{
 				if (_recognized)
 				{
-					CleanDrawingArea();
+					Util.PDollarUtil.CleanDrawingArea(_recognized,_strokeId,points,gestureLinesRenderer);
+
 				}
 
 				++_strokeId;
@@ -143,7 +145,7 @@ public class PDollarRecognizer : MonoBehaviour
 			score += gestureResult.Score * 100;
 		}	
 		GetRandomPattern();
-		CleanDrawingArea();
+		Util.PDollarUtil.CleanDrawingArea(_recognized,_strokeId,points,gestureLinesRenderer);
 		scoreText.text = "Score : "+ score.ToString();
 		
 	}
@@ -154,21 +156,6 @@ public class PDollarRecognizer : MonoBehaviour
 		_currentGesture = trainingSet[(int)random];
 		gestureText.text = _currentGesture.Name;
 	}
-
-	public void CleanDrawingArea()
-	{
-		_recognized = false;
-		_strokeId = -1;
-
-		points.Clear();
-
-		foreach (LineRenderer lineRenderer in gestureLinesRenderer)
-		{
-			lineRenderer.SetVertexCount(0);
-			Destroy(lineRenderer.gameObject);
-		}
-
-		gestureLinesRenderer.Clear();
-	}
+	
 	
 }
