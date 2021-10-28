@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -40,8 +41,10 @@ public class AudioManager : MonoBehaviour
 
     public void PlayAudio()
     {
+        Debug.Log("Is Music Playing :"+AudioSourceA.isPlaying);
         if (!AudioSourceA.isPlaying)
         {
+            Debug.Log("Play Music !!");
             AudioSourceA.Play();
         }
     }

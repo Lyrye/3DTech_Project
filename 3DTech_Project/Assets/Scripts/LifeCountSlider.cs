@@ -27,7 +27,7 @@ public class LifeCountSlider : MonoBehaviour
         myText.text = "Nombre de vies: " + mySlider.value;
         lifeCount = mySlider.value;
 
-        myVolumeText.text = "Volume: " + myVolumeSlider.value;
+        myVolumeText.text = "Volume";  
 
         printIntro = myToggle.isOn;
     }

@@ -8,7 +8,7 @@ public class MainMenu : MonoBehaviour
   
     public void Awake()
     {
-        AudioManager.Instance.PlayAudio();
+      AudioManager.Instance.PlayAudio();
     }
 
     public void ExitButton()
