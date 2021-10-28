@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class Player : MonoBehaviour
     public bool startBlinking = false;
 
     public GameObject CanvasGameOver;
+    public Text hitText;
 
     // Start is called before the first frame update
     void Start()
@@ -57,7 +59,13 @@ public class Player : MonoBehaviour
         {
             PlayerStats.Instance.TakeDamage(1.0f);
             startBlinking = true;
+            hitText.text = "RATÉ !";
+        }else{
+          hitText.text = "BIEN JOUÉ !";
         }
+
+        hitText.enabled = true;
+        Invoke("EnabledText", 1.2f);
 
         if(PlayerStats.Instance.Health <= 0){
           // Zero out the bird's velocity
@@ -74,13 +82,13 @@ public class Player : MonoBehaviour
 
     private void StartBlinkingEffect()
     {
+    //  hitText.text = "HITTEN";
       spriteBlinkingTotalTimer += Time.deltaTime;
       if(spriteBlinkingTotalTimer >= spriteBlinkingTotalDuration)
       {
             startBlinking = false;
            spriteBlinkingTotalTimer = 0.0f;
-           this.gameObject.GetComponent<SpriteRenderer> ().enabled = true;   // according to
-                    //your sprite
+           this.gameObject.GetComponent<SpriteRenderer> ().enabled = true;
            return;
         }
 
@@ -94,5 +102,10 @@ public class Player : MonoBehaviour
              this.gameObject.GetComponent<SpriteRenderer> ().enabled = true;   //make changes
          }
       }
+    }
+
+    public void EnabledText()
+    {
+      hitText.enabled =false;
     }
 }
