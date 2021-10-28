@@ -30,8 +30,7 @@ public class PDollarRecognizer : MonoBehaviour
 	private bool _isRecognize = false;
 	private Gesture _currentGesture;
 	private float score =0;
-
-
+	
 	public bool isRecognized()
 	{
 		return _isRecognize;
@@ -51,6 +50,7 @@ public class PDollarRecognizer : MonoBehaviour
 		LoadPreMadeGesture();
 		LoadCustomGesture();
 		GetRandomPattern();
+		Debug.Log("le path : "+Application.persistentDataPath);
 	}
 	
 	void Update ()
@@ -118,6 +118,7 @@ public class PDollarRecognizer : MonoBehaviour
 
 	private void LoadCustomGesture()
 	{
+		
 		string[] filePaths = Directory.GetFiles(Application.persistentDataPath, "*.xml");
 		foreach (string filePath in filePaths)
 			trainingSet.Add(GestureIO.ReadGestureFromFile(filePath));
