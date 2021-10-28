@@ -5,11 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-  /*
+  
     public void Awake()
     {
-        DontDestroyOnLoad(PlayerStats.Instance);
-    }*/
+        AudioManager.Instance.PlayAudio();
+    }
 
     public void ExitButton()
     {
