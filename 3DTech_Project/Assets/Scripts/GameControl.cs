@@ -30,22 +30,7 @@ public class GameControl : MonoBehaviour
 
         PlayerStats.Instance.Health = LifeCountSlider.lifeCount;
         PlayerStats.Instance.MaxHealth = LifeCountSlider.lifeCount;
-    //    PlayerStats.Instance.Heal(100.0f);
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-      //If the game is over and the player has pressed some input...
-      /*
-      if (gameOver && Input.GetMouseButtonDown(0))
-      {
-          //...reload the current scene.
-          SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-      }
-      */
-    }
-
     public void ChickenScored()
     {
         //The bird can't score if the game is over.
@@ -60,7 +45,6 @@ public class GameControl : MonoBehaviour
 
     public void ChickenDied()
     {
-      //gameOverText.setActive(true);
       gameOver = true;
     }
 }

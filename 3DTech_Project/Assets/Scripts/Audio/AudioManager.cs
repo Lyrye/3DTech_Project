@@ -12,7 +12,6 @@ public class AudioManager : MonoBehaviour
 {
     public AudioClip[] Playlist;
     public AudioSource AudioSourceA;
-   // public AudioSource AudioSourceB
     public AudioMixer AudioMixer;
    
     private static AudioManager instance = null;
@@ -41,10 +40,8 @@ public class AudioManager : MonoBehaviour
 
     public void PlayAudio()
     {
-        Debug.Log("Is Music Playing :"+AudioSourceA.isPlaying);
         if (!AudioSourceA.isPlaying)
         {
-            Debug.Log("Play Music !!");
             AudioSourceA.Play();
         }
     }
@@ -56,36 +53,10 @@ public class AudioManager : MonoBehaviour
             AudioSourceA.Stop();
         }
     }
-    /*public void PlayAudio(AudioClipIndex sIndex = AudioClipIndex.SourceA)
-    {
-        AudioSource tAudioSource = AudioSourceA;
-        if (sIndex == AudioClipIndex.SourceB)
-        {
-            tAudioSource = AudioSourceB;
-        }
-
-        tAudioSource.Play();
-        StartCoroutine(StartFade(tAudioSource, 3f, 1, 0));
-        Debug.Log("Playing Audio");
-    }
-    public void StopAudio(AudioClipIndex sIndex = AudioClipIndex.SourceA)
-    {
-        AudioSource tAudioSource = AudioSourceA;
-        if (sIndex == AudioClipIndex.SourceB)
-        {
-            tAudioSource = AudioSourceB;
-        }
-
-        StartCoroutine(StartFade(tAudioSource, 3f, 0, 1));
-    }*/
+    
     public void SetAudio(AudioClip sClip, AudioClipIndex sIndex = AudioClipIndex.SourceA)
     {
         AudioSource tAudioSource = AudioSourceA;
-       /* if (sIndex == AudioClipIndex.SourceB)
-        {
-            tAudioSource = AudioSourceB;
-        }*/
-
         tAudioSource.clip = sClip;
     }
     public void SetAudio(int sPlayListIndex, AudioClipIndex sIndex = AudioClipIndex.SourceA)

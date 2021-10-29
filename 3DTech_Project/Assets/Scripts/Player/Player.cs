@@ -34,24 +34,6 @@ public class Player : MonoBehaviour
           StartBlinkingEffect();
       }
     }
-
-/*
-    void OnCollisionEnter2D(Collision2D other)
-    {
-      //  Debug.Log("test");
-
-        // If the bird collides with something set it to dead...
-        if(PlayerStats.Instance.Health <= 0){
-          // Zero out the bird's velocity
-          rb.velocity = Vector2.zero;
-          isDead = true;
-          //...tell the Animator about it...
-          anim.enabled = false;
-          //...and tell the game control about it.
-          GameControl.instance.ChickenDied ();
-        }
-    }*/
-
     void OnTriggerEnter2D(Collider2D other)
     {
         PDollarRecognizer.Instance.StartRecognize();
@@ -82,7 +64,6 @@ public class Player : MonoBehaviour
 
     private void StartBlinkingEffect()
     {
-    //  hitText.text = "HITTEN";
       spriteBlinkingTotalTimer += Time.deltaTime;
       if(spriteBlinkingTotalTimer >= spriteBlinkingTotalDuration)
       {
