@@ -218,8 +218,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 258576042}
-        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+      - m_Target: {fileID: 258576046}
+        m_TargetAssemblyTypeName: PlaySoundEffect, Assembly-CSharp
         m_MethodName: PlaySound
         m_Mode: 2
         m_Arguments:
@@ -361,6 +361,7 @@ GameObject:
   - component: {fileID: 258576042}
   - component: {fileID: 258576045}
   - component: {fileID: 258576044}
+  - component: {fileID: 258576046}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -382,7 +383,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Playlist: []
   AudioSourceA: {fileID: 258576045}
-  AudioSourceB: {fileID: 258576044}
   AudioMixer: {fileID: 24100000, guid: 4761cf6510baae741b0b8178b970018b, type: 2}
 --- !u!4 &258576043
 Transform:
@@ -590,6 +590,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &258576046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 258576041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a101201e12f5ee9429cc116203ed0073, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AudioSourceA: {fileID: 258576044}
 --- !u!1 &335999537
 GameObject:
   m_ObjectHideFlags: 0
@@ -1228,8 +1241,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 258576042}
-        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+      - m_Target: {fileID: 258576046}
+        m_TargetAssemblyTypeName: PlaySoundEffect, Assembly-CSharp
         m_MethodName: PlaySound
         m_Mode: 2
         m_Arguments:
@@ -1983,8 +1996,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 258576042}
-        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+      - m_Target: {fileID: 258576046}
+        m_TargetAssemblyTypeName: PlaySoundEffect, Assembly-CSharp
         m_MethodName: PlaySound
         m_Mode: 2
         m_Arguments:
@@ -2699,8 +2712,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 258576042}
-        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+      - m_Target: {fileID: 258576046}
+        m_TargetAssemblyTypeName: PlaySoundEffect, Assembly-CSharp
         m_MethodName: PlaySound
         m_Mode: 2
         m_Arguments:
@@ -3363,8 +3376,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 258576042}
-        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+      - m_Target: {fileID: 258576046}
+        m_TargetAssemblyTypeName: PlaySoundEffect, Assembly-CSharp
         m_MethodName: PlaySound
         m_Mode: 2
         m_Arguments:
