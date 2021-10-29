@@ -19,6 +19,7 @@ public class LifeCountSlider : MonoBehaviour
     void Start()
     {
       mySlider.value = lifeCount;
+      myToggle.isOn = printIntro;
     }
 
     // Update is called once per frame
@@ -27,7 +28,7 @@ public class LifeCountSlider : MonoBehaviour
         myText.text = "Nombre de vies: " + mySlider.value;
         lifeCount = mySlider.value;
 
-        myVolumeText.text = "Volume";  
+        myVolumeText.text = "Volume";
 
         printIntro = myToggle.isOn;
     }
